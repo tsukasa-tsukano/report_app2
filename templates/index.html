@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>トップ</title>
+    </head>
+    <body>
+        <h2>ツール</h2>
+        <ul>
+            <li><a href="/upload">ファイルアップロード</a></li>
+        </ul>
+        <form method="POST" action="/edit">
+            <button type="submit">送信</button>
+        </form>
+        <h2>アップロードされているファイル一覧</h2>
+        <!-- app.pyのindex()関数で渡したdataを展開するためのfor文 -->
+        {% for i in data %}
+        <!-- データベースに登録したtitleとfile.pathを表示。[7:]でディレクトリ名のstaticを省いている -->
+            <p>タイトル 【{{i.title}}】</p>
+            <p>ファイル 【{{i.file_path[7:]}}】</p>
+            <p>登録時間【{{i.dt}}】</p>
+            <!-- /deleteにデータベースに登録されたidを付けてGETメソッドで送信 -->
+            <form method="GET" action="{{url_for('delete', id=i.id)}}">
+                <input value="削除" type='submit'>
+            </form>
+        {% else %}
+        <!--  ファイルが1つもアップロードされていない場合のメッセージ -->
+            <p>何もアップロードされていません</p>
+        {% endfor %}
+    </body>
+</html>
